@@ -1,9 +1,9 @@
 package com.valkryst.VGeometry;
 
+import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
-import com.valkryst.VGeometry.Point;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -21,7 +21,7 @@ public class TestPoint {
 
     @Test
     public void testConstructor_withNoArgs() {
-        final Point p = new Point();
+        final var p = new Point();
         Assert.assertNotNull(p);
         Assert.assertEquals(0, p.getX());
         Assert.assertEquals(0, p.getY());
@@ -29,7 +29,7 @@ public class TestPoint {
 
     @Test
     public void testConstructor_withInts() {
-        final Point p = new Point(123, 456);
+        final var p = new Point(123, 456);
         Assert.assertNotNull(p);
         Assert.assertEquals(123, p.getX());
         Assert.assertEquals(456, p.getY());
@@ -37,12 +37,12 @@ public class TestPoint {
 
     @Test
     public void testConstructor_withExistingPoint() {
-        final Point original = new Point(123, 456);
+        final var original = new Point(123, 456);
         Assert.assertNotNull(original);
         Assert.assertEquals(123, original.getX());
         Assert.assertEquals(456, original.getY());
 
-        final Point clone = new Point(original);
+        final var clone = new Point(original);
         Assert.assertNotNull(clone);
         Assert.assertEquals(123, clone.getX());
         Assert.assertEquals(456, clone.getY());
@@ -52,16 +52,36 @@ public class TestPoint {
 
     @Test(expected = NullPointerException.class)
     public void testConstructor_withNullPoint() {
-        new Point(null);
+        new Point((Point) null);
+    }
+
+    @Test
+    public void testConstructor_withJson() {
+        final var original = new Point(123, 456);
+        Assert.assertNotNull(original);
+        Assert.assertEquals(123, original.getX());
+        Assert.assertEquals(456, original.getY());
+
+        final var newPoint = new Point(original.toJson());
+        Assert.assertNotNull(newPoint);
+        Assert.assertEquals(123, newPoint.getX());
+        Assert.assertEquals(456, newPoint.getY());
+
+        Assert.assertNotSame(original, newPoint);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testConstructor_withNullJson() {
+        new Point((JSONObject) null);
     }
 
     @Test
     public void testSerializationAndDeserialization() {
-        final Point originalPoint = new Point(123, 456);
+        final var originalPoint = new Point(123, 456);
 
         try (
-            final FileOutputStream fos = new FileOutputStream("temp.ser");
-            final ObjectOutputStream oos = new ObjectOutputStream(fos);
+            final var fos = new FileOutputStream("temp.ser");
+            final var oos = new ObjectOutputStream(fos);
         ) {
             oos.writeObject(originalPoint);
             oos.flush();
@@ -71,10 +91,10 @@ public class TestPoint {
         }
 
         try (
-            final FileInputStream fis = new FileInputStream("temp.ser");
-            final ObjectInputStream ois = new ObjectInputStream(fis);
+            final var fis = new FileInputStream("temp.ser");
+            final var ois = new ObjectInputStream(fis);
         ) {
-            final Point loadedPoint = (Point) ois.readObject();
+            final var loadedPoint = (Point) ois.readObject();
             Assert.assertEquals(originalPoint.getX(), loadedPoint.getX());
             Assert.assertEquals(originalPoint.getY(), loadedPoint.getY());
         } catch (final IOException | ClassNotFoundException e) {
@@ -84,27 +104,39 @@ public class TestPoint {
     }
 
     @Test
+    public void testToJson() {
+        final var p = new Point(123, 456);
+        final var json = p.toJson();
+
+        Assert.assertNotNull(json);
+        Assert.assertTrue(json.has("x"));
+        Assert.assertTrue(json.has("y"));
+        Assert.assertEquals(123, json.getInt("x"));
+        Assert.assertEquals(456, json.getInt("y"));
+    }
+
+    @Test
     public void testToString() {
-        final Point p = new Point(123, 456);
+        final var p = new Point(123, 456);
         Assert.assertNotNull(p.toString());
         Assert.assertTrue(p.toString().length() > 0);
     }
 
     @Test
     public void testGetX() {
-        final Point p = new Point(123, 456);
+        final var p = new Point(123, 456);
         Assert.assertEquals(123, p.getX());
     }
 
     @Test
     public void testGetY() {
-        final Point p = new Point(123, 456);
+        final var p = new Point(123, 456);
         Assert.assertEquals(456, p.getY());
     }
 
     @Test
     public void testSetX() {
-        final Point p = new Point(123, 456);
+        final var p = new Point(123, 456);
         Assert.assertEquals(123, p.getX());
 
         p.setX(789);
@@ -113,7 +145,7 @@ public class TestPoint {
 
     @Test
     public void testSetY() {
-        final Point p = new Point(123, 456);
+        final var p = new Point(123, 456);
         Assert.assertEquals(456, p.getY());
 
         p.setY(789);

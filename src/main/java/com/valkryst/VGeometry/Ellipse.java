@@ -3,6 +3,7 @@ package com.valkryst.VGeometry;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.ToString;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -59,6 +60,32 @@ public class Ellipse implements Serializable {
     }
 
     /**
+     * Constructs an ellipse, using the JSON representation of an ellipse.
+     *
+     * @param json
+     *      The JSON representation of an ellipse.
+     */
+    public Ellipse(final @NonNull JSONObject json) {
+        setMidpoint(new Point(json.getJSONObject("midpoint")));
+        setHorizontalRadius(json.getDouble("horizontalRadius"));
+        setVerticalRadius(json.getDouble("verticalRadius"));
+    }
+
+    /**
+     * Retrieves the JSON representation of this ellipse.
+     *
+     * @return
+     *      The JSON representation of this ellipse.
+     */
+    public JSONObject toJson() {
+        final var object = new JSONObject();
+        object.put("midpoint", midpoint.toJson());
+        object.put("horizontalRadius", horizontalRadius);
+        object.put("verticalRadius", verticalRadius);
+        return object;
+    }
+
+    /**
      * Loads this ellipse from its serialized form.
      *
      * @param is
@@ -84,9 +111,9 @@ public class Ellipse implements Serializable {
 
     /** Recalculates the circumference. */
     private void updateCircumference() {
-        final double h = Math.pow(verticalRadius - horizontalRadius, 2) / Math.pow(verticalRadius + horizontalRadius, 2);
-        final double numerator = 3 * h;
-        final double denominator = 10 + Math.sqrt(4 - (3 * h));
+        final var h = Math.pow(verticalRadius - horizontalRadius, 2) / Math.pow(verticalRadius + horizontalRadius, 2);
+        final var numerator = 3 * h;
+        final var denominator = 10 + Math.sqrt(4 - (3 * h));
         circumference = Math.PI * (verticalRadius + horizontalRadius) * (1 + (numerator / denominator));
     }
 

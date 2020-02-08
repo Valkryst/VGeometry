@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.ToString;
+import org.json.JSONObject;
 
 import java.io.Serializable;
 
@@ -41,5 +42,29 @@ public class Point implements Serializable {
     public Point(final @NonNull Point otherPoint) {
         this.x = otherPoint.x;
         this.y = otherPoint.y;
+    }
+
+    /**
+     * Constructs a new point, using the JSON representation of a point.
+     *
+     * @param json
+     *          The JSON representation of a point.
+     */
+    public Point(final @NonNull JSONObject json) {
+        this.x = json.getInt("x");
+        this.y = json.getInt("y");
+    }
+
+    /**
+     * Retrieves the JSON representation of this point.
+     *
+     * @return
+     *      The JSON representation of this point.
+     */
+    public JSONObject toJson() {
+        final var object = new JSONObject();
+        object.put("x", x);
+        object.put("y", y);
+        return object;
     }
 }

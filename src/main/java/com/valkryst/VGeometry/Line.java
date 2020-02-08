@@ -1,6 +1,7 @@
 package com.valkryst.VGeometry;
 
 import lombok.*;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -40,6 +41,30 @@ public class Line implements Serializable {
     public Line(final @NonNull Line line) {
         setStartPoint(new Point(line.getStartPoint()));
         setEndPoint(new Point(line.getEndPoint()));
+    }
+
+    /**
+     * Constructs a new line, using the JSON representation of a line.
+     *
+     * @param json
+     *          The JSON representation of a line.
+     */
+    public Line(final @NonNull JSONObject json) {
+        setStartPoint(new Point(json.getJSONObject("startPoint")));
+        setEndPoint(new Point(json.getJSONObject("endPoint")));
+    }
+
+    /**
+     * Retrieves the JSON representation of this line.
+     *
+     * @return
+     *      The JSON representation of this line.
+     */
+    public JSONObject toJson() {
+        final var object = new JSONObject();
+        object.put("startPoint", startPoint.toJson());
+        object.put("endPoint", endPoint.toJson());
+        return object;
     }
 
     /**

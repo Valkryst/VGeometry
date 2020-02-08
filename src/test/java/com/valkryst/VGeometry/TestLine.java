@@ -1,27 +1,23 @@
 package com.valkryst.VGeometry;
 
+import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import com.valkryst.VGeometry.Line;
-import com.valkryst.VGeometry.Point;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class TestLine {
-    private final Point startPoint = new Point();
-    private final Point endPoint = new Point();
+    private Point startPoint;
+    private Point endPoint;
 
     @Before
     public void before() {
-        startPoint.setX(0);
-        startPoint.setY(0);
-
-        endPoint.setX(10);
-        endPoint.setY(10);
+        startPoint = new Point(0, 0);
+        endPoint = new Point(10, 10);
     }
 
     @After
@@ -35,7 +31,7 @@ public class TestLine {
 
     @Test
     public void testConstructor_withPoints() {
-        final Line line = new Line(startPoint, endPoint);
+        final var line = new Line(startPoint, endPoint);
         Assert.assertNotNull(line);
         Assert.assertEquals(startPoint, line.getStartPoint());
         Assert.assertEquals(endPoint, line.getEndPoint());
@@ -57,13 +53,13 @@ public class TestLine {
 
     @Test
     public void testConstructor_withExistingLine() {
-        final Line original = new Line(startPoint, endPoint);
+        final var original = new Line(startPoint, endPoint);
         Assert.assertNotNull(original);
         Assert.assertEquals(startPoint, original.getStartPoint());
         Assert.assertEquals(endPoint, original.getEndPoint());
         Assert.assertEquals(1, original.getSlope(), 1e-15);
 
-        final Line clone = new Line(original);
+        final var clone = new Line(original);
         Assert.assertNotNull(clone);
         Assert.assertEquals(startPoint, clone.getStartPoint());
         Assert.assertEquals(endPoint, clone.getEndPoint());
@@ -76,16 +72,40 @@ public class TestLine {
 
     @Test(expected = NullPointerException.class)
     public void testConstructor_withNullLine() {
-        new Line(null);
+        new Line((Line) null);
+    }
+
+    @Test
+    public void testConstructor_withJson() {
+        final var original = new Line(startPoint, endPoint);
+        Assert.assertNotNull(original);
+        Assert.assertEquals(0, original.getStartPoint().getX());
+        Assert.assertEquals(0, original.getStartPoint().getY());
+        Assert.assertEquals(10, original.getEndPoint().getX());
+        Assert.assertEquals(10, original.getEndPoint().getY());
+
+        final var newLine = new Line(original.toJson());
+        Assert.assertNotNull(newLine);
+        Assert.assertEquals(0, newLine.getStartPoint().getX());
+        Assert.assertEquals(0, newLine.getStartPoint().getY());
+        Assert.assertEquals(10, newLine.getEndPoint().getX());
+        Assert.assertEquals(10, newLine.getEndPoint().getY());
+
+        Assert.assertNotSame(original, newLine);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testConstructor_withNullJson() {
+        new Line((JSONObject) null);
     }
 
     @Test
     public void testSerializationAndDeserialization() {
-        final Line originalLine = new Line(startPoint, endPoint);
+        final var originalLine = new Line(startPoint, endPoint);
 
         try (
-            final FileOutputStream fos = new FileOutputStream("temp.ser");
-            final ObjectOutputStream oos = new ObjectOutputStream(fos);
+            final var fos = new FileOutputStream("temp.ser");
+            final var oos = new ObjectOutputStream(fos);
         ) {
             oos.writeObject(originalLine);
             oos.flush();
@@ -95,10 +115,10 @@ public class TestLine {
         }
 
         try (
-            final FileInputStream fis = new FileInputStream("temp.ser");
-            final ObjectInputStream ois = new ObjectInputStream(fis);
+            final var fis = new FileInputStream("temp.ser");
+            final var ois = new ObjectInputStream(fis);
         ) {
-            final Line loadedLine = (Line) ois.readObject();
+            final var loadedLine = (Line) ois.readObject();
             Assert.assertEquals(originalLine.getStartPoint(), loadedLine.getStartPoint());
             Assert.assertEquals(originalLine.getEndPoint(), loadedLine.getEndPoint());
             Assert.assertEquals(1, loadedLine.getSlope(), 1e-15);
@@ -109,16 +129,36 @@ public class TestLine {
     }
 
     @Test
+    public void testToJson() {
+        final var line = new Line(startPoint, endPoint);
+        final var json = line.toJson();
+
+        Assert.assertNotNull(json);
+        Assert.assertTrue(json.has("startPoint"));
+        Assert.assertTrue(json.has("endPoint"));
+
+        final var startPoint = json.getJSONObject("startPoint");
+        Assert.assertNotNull(startPoint);
+        Assert.assertEquals(0, startPoint.getInt("x"));
+        Assert.assertEquals(0, startPoint.getInt("y"));
+
+        final var endPoint = json.getJSONObject("endPoint");
+        Assert.assertNotNull(endPoint);
+        Assert.assertEquals(10, endPoint.getInt("x"));
+        Assert.assertEquals(10, endPoint.getInt("y"));
+    }
+
+    @Test
     public void testToString() {
-        final Line line = new Line(startPoint, endPoint);
+        final var line = new Line(startPoint, endPoint);
         Assert.assertNotNull(line.toString());
         Assert.assertTrue(line.toString().length() > 0);
     }
 
     @Test
     public void testSetStartPoint() {
-        final Point point = new Point(55, 55);
-        final Line line = new Line(startPoint, endPoint);
+        final var point = new Point(55, 55);
+        final var line = new Line(startPoint, endPoint);
         line.setStartPoint(point);
 
         Assert.assertNotSame(startPoint, line.getStartPoint());
@@ -127,9 +167,9 @@ public class TestLine {
 
     @Test
     public void testSetStartPoint_ensureSlopeIsUpdated() {
-        final Point point = new Point(7, 3);
+        final var point = new Point(7, 3);
 
-        final Line line = new Line(startPoint, endPoint);
+        final var line = new Line(startPoint, endPoint);
         Assert.assertEquals(1, line.getSlope(), 1e-15);
 
         line.setStartPoint(point);
@@ -138,8 +178,8 @@ public class TestLine {
 
     @Test
     public void testSetEndPoint() {
-        final Point point = new Point(55, 55);
-        final Line line = new Line(startPoint, endPoint);
+        final var point = new Point(55, 55);
+        final var line = new Line(startPoint, endPoint);
         line.setEndPoint(point);
 
         Assert.assertNotSame(endPoint, line.getEndPoint());
@@ -148,9 +188,9 @@ public class TestLine {
 
     @Test
     public void testSetEndPoint_ensureSlopeIsUpdated() {
-        final Point point = new Point(7, 3);
+        final var point = new Point(7, 3);
 
-        final Line line = new Line(startPoint, endPoint);
+        final var line = new Line(startPoint, endPoint);
         Assert.assertEquals(1, line.getSlope(), 1e-15);
 
         line.setEndPoint(point);

@@ -3,6 +3,7 @@ package com.valkryst.VGeometry;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.ToString;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -47,6 +48,30 @@ public class Circle implements Serializable {
     public Circle(final @NonNull Circle circle) {
         setMidpoint(circle.getMidpoint());
         setRadius(circle.getRadius());
+    }
+
+    /**
+     * Constructs a new circle, using the JSON representation of a circle.
+     *
+     * @param json
+     *      The JSON representation of a circle.
+     */
+    public Circle(final @NonNull JSONObject json) {
+        setMidpoint(new Point(json.getJSONObject("midpoint")));
+        setRadius(json.getDouble("radius"));
+    }
+
+    /**
+     * Retrieves the JSON representation of this circle.
+     *
+     * @return
+     *      The JSON representation of this circle.
+     */
+    public JSONObject toJson() {
+        final var object = new JSONObject();
+        object.put("midpoint", midpoint.toJson());
+        object.put("radius", radius);
+        return object;
     }
 
     /**
