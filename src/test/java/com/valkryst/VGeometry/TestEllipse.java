@@ -1,16 +1,17 @@
 package com.valkryst.VGeometry;
 
 import org.json.JSONObject;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 public class TestEllipse {
-    @After
+    @AfterEach
     public void after() {
         try {
             Files.deleteIfExists(Paths.get("temp.ser"));
@@ -26,20 +27,20 @@ public class TestEllipse {
         final double verticalRadius = 20;
 
         final var ellipse = new Ellipse(midpoint, horizontalRadius, verticalRadius);
-        Assert.assertNotNull(ellipse);
-        Assert.assertEquals(midpoint, ellipse.getMidpoint());
-        Assert.assertEquals(horizontalRadius, ellipse.getHorizontalRadius(), 1e-15);
-        Assert.assertEquals(verticalRadius, ellipse.getVerticalRadius(), 1e-15);
-        Assert.assertEquals(628.32, ellipse.getArea(), 0.002);
-        Assert.assertEquals(96.88, ellipse.getCircumference(), 0.005);
-        Assert.assertEquals(20, ellipse.getHorizontalDiameter(), 1e-15);
-        Assert.assertEquals(40, ellipse.getVerticalDiameter(), 1e-15);
-        Assert.assertNotSame(midpoint, ellipse.getMidpoint());
+        assertNotNull(ellipse);
+        assertEquals(midpoint, ellipse.getMidpoint());
+        assertEquals(horizontalRadius, ellipse.getHorizontalRadius(), 1e-15);
+        assertEquals(verticalRadius, ellipse.getVerticalRadius(), 1e-15);
+        assertEquals(628.32, ellipse.getArea(), 0.002);
+        assertEquals(96.88, ellipse.getCircumference(), 0.005);
+        assertEquals(20, ellipse.getHorizontalDiameter(), 1e-15);
+        assertEquals(40, ellipse.getVerticalDiameter(), 1e-15);
+        assertNotSame(midpoint, ellipse.getMidpoint());
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void testConstructor_withNullPoint() {
-        new Ellipse(null, 10, 20);
+        assertThrows(NullPointerException.class, () -> new Ellipse(null, 10, 20));
     }
 
     @Test
@@ -49,34 +50,34 @@ public class TestEllipse {
         final double verticalRadius = 20;
 
         final var original = new Ellipse(midpoint, horizontalRadius, verticalRadius);
-        Assert.assertNotNull(original);
-        Assert.assertEquals(midpoint, original.getMidpoint());
-        Assert.assertEquals(horizontalRadius, original.getHorizontalRadius(), 1e-15);
-        Assert.assertEquals(verticalRadius, original.getVerticalRadius(), 1e-15);
-        Assert.assertEquals(628.32, original.getArea(), 0.002);
-        Assert.assertEquals(96.88, original.getCircumference(), 0.005);
-        Assert.assertEquals(20, original.getHorizontalDiameter(), 1e-15);
-        Assert.assertEquals(40, original.getVerticalDiameter(), 1e-15);
-        Assert.assertNotSame(midpoint, original.getMidpoint());
+        assertNotNull(original);
+        assertEquals(midpoint, original.getMidpoint());
+        assertEquals(horizontalRadius, original.getHorizontalRadius(), 1e-15);
+        assertEquals(verticalRadius, original.getVerticalRadius(), 1e-15);
+        assertEquals(628.32, original.getArea(), 0.002);
+        assertEquals(96.88, original.getCircumference(), 0.005);
+        assertEquals(20, original.getHorizontalDiameter(), 1e-15);
+        assertEquals(40, original.getVerticalDiameter(), 1e-15);
+        assertNotSame(midpoint, original.getMidpoint());
 
         final var clone = new Ellipse(original);
-        Assert.assertNotNull(clone);
-        Assert.assertEquals(midpoint, clone.getMidpoint());
-        Assert.assertEquals(horizontalRadius, clone.getHorizontalRadius(), 1e-15);
-        Assert.assertEquals(verticalRadius, clone.getVerticalRadius(), 1e-15);
-        Assert.assertEquals(628.32, clone.getArea(), 0.002);
-        Assert.assertEquals(96.88, clone.getCircumference(), 0.005);
-        Assert.assertEquals(20, clone.getHorizontalDiameter(), 1e-15);
-        Assert.assertEquals(40, clone.getVerticalDiameter(), 1e-15);
-        Assert.assertNotSame(midpoint, clone.getMidpoint());
+        assertNotNull(clone);
+        assertEquals(midpoint, clone.getMidpoint());
+        assertEquals(horizontalRadius, clone.getHorizontalRadius(), 1e-15);
+        assertEquals(verticalRadius, clone.getVerticalRadius(), 1e-15);
+        assertEquals(628.32, clone.getArea(), 0.002);
+        assertEquals(96.88, clone.getCircumference(), 0.005);
+        assertEquals(20, clone.getHorizontalDiameter(), 1e-15);
+        assertEquals(40, clone.getVerticalDiameter(), 1e-15);
+        assertNotSame(midpoint, clone.getMidpoint());
 
-        Assert.assertNotSame(original, clone);
-        Assert.assertNotSame(original.getMidpoint(), clone.getMidpoint());
+        assertNotSame(original, clone);
+        assertNotSame(original.getMidpoint(), clone.getMidpoint());
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void testConstructor_withNullEllipse() {
-        new Ellipse((Ellipse) null);
+        assertThrows(NullPointerException.class, () -> new Ellipse((Ellipse) null));
     }
 
     @Test
@@ -86,33 +87,33 @@ public class TestEllipse {
         final double verticalRadius = 20;
 
         final var original = new Ellipse(midpoint, horizontalRadius, verticalRadius);
-        Assert.assertNotNull(original);
-        Assert.assertEquals(midpoint, original.getMidpoint());
-        Assert.assertEquals(horizontalRadius, original.getHorizontalRadius(), 1e-15);
-        Assert.assertEquals(verticalRadius, original.getVerticalRadius(), 1e-15);
-        Assert.assertEquals(628.32, original.getArea(), 0.002);
-        Assert.assertEquals(96.88, original.getCircumference(), 0.005);
-        Assert.assertEquals(20, original.getHorizontalDiameter(), 1e-15);
-        Assert.assertEquals(40, original.getVerticalDiameter(), 1e-15);
-        Assert.assertNotSame(midpoint, original.getMidpoint());
+        assertNotNull(original);
+        assertEquals(midpoint, original.getMidpoint());
+        assertEquals(horizontalRadius, original.getHorizontalRadius(), 1e-15);
+        assertEquals(verticalRadius, original.getVerticalRadius(), 1e-15);
+        assertEquals(628.32, original.getArea(), 0.002);
+        assertEquals(96.88, original.getCircumference(), 0.005);
+        assertEquals(20, original.getHorizontalDiameter(), 1e-15);
+        assertEquals(40, original.getVerticalDiameter(), 1e-15);
+        assertNotSame(midpoint, original.getMidpoint());
 
         final var newEllipse = new Ellipse(original.toJson());
-        Assert.assertNotNull(newEllipse);
-        Assert.assertEquals(midpoint, newEllipse.getMidpoint());
-        Assert.assertEquals(horizontalRadius, newEllipse.getHorizontalRadius(), 1e-15);
-        Assert.assertEquals(verticalRadius, newEllipse.getVerticalRadius(), 1e-15);
-        Assert.assertEquals(628.32, newEllipse.getArea(), 0.002);
-        Assert.assertEquals(96.88, newEllipse.getCircumference(), 0.005);
-        Assert.assertEquals(20, newEllipse.getHorizontalDiameter(), 1e-15);
-        Assert.assertEquals(40, newEllipse.getVerticalDiameter(), 1e-15);
-        Assert.assertNotSame(midpoint, newEllipse.getMidpoint());
+        assertNotNull(newEllipse);
+        assertEquals(midpoint, newEllipse.getMidpoint());
+        assertEquals(horizontalRadius, newEllipse.getHorizontalRadius(), 1e-15);
+        assertEquals(verticalRadius, newEllipse.getVerticalRadius(), 1e-15);
+        assertEquals(628.32, newEllipse.getArea(), 0.002);
+        assertEquals(96.88, newEllipse.getCircumference(), 0.005);
+        assertEquals(20, newEllipse.getHorizontalDiameter(), 1e-15);
+        assertEquals(40, newEllipse.getVerticalDiameter(), 1e-15);
+        assertNotSame(midpoint, newEllipse.getMidpoint());
 
-        Assert.assertNotSame(original, newEllipse);
+        assertNotSame(original, newEllipse);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void testConstructor_withNullJson() {
-        new Ellipse((JSONObject) null);
+        assertThrows(NullPointerException.class, () -> new Ellipse((JSONObject) null));
     }
 
     @Test
@@ -130,7 +131,7 @@ public class TestEllipse {
             oos.flush();
         } catch(final Exception e) {
             e.printStackTrace();
-            Assert.fail();
+            fail();
         }
 
         try (
@@ -138,18 +139,18 @@ public class TestEllipse {
             final var ois = new ObjectInputStream(fis);
         ) {
             final var loadedEllipse = (Ellipse) ois.readObject();
-            Assert.assertNotNull(loadedEllipse);
-            Assert.assertEquals(midpoint, loadedEllipse.getMidpoint());
-            Assert.assertEquals(horizontalRadius, loadedEllipse.getHorizontalRadius(), 1e-15);
-            Assert.assertEquals(verticalRadius, loadedEllipse.getVerticalRadius(), 1e-15);
-            Assert.assertEquals(628.32, loadedEllipse.getArea(), 0.002);
-            Assert.assertEquals(96.88, loadedEllipse.getCircumference(), 0.005);
-            Assert.assertEquals(20, loadedEllipse.getHorizontalDiameter(), 1e-15);
-            Assert.assertEquals(40, loadedEllipse.getVerticalDiameter(), 1e-15);
-            Assert.assertNotSame(midpoint, loadedEllipse.getMidpoint());
+            assertNotNull(loadedEllipse);
+            assertEquals(midpoint, loadedEllipse.getMidpoint());
+            assertEquals(horizontalRadius, loadedEllipse.getHorizontalRadius(), 1e-15);
+            assertEquals(verticalRadius, loadedEllipse.getVerticalRadius(), 1e-15);
+            assertEquals(628.32, loadedEllipse.getArea(), 0.002);
+            assertEquals(96.88, loadedEllipse.getCircumference(), 0.005);
+            assertEquals(20, loadedEllipse.getHorizontalDiameter(), 1e-15);
+            assertEquals(40, loadedEllipse.getVerticalDiameter(), 1e-15);
+            assertNotSame(midpoint, loadedEllipse.getMidpoint());
         } catch (final IOException | ClassNotFoundException e) {
             e.printStackTrace();
-            Assert.fail();
+            fail();
         }
     }
 
@@ -162,26 +163,26 @@ public class TestEllipse {
         final var ellipse = new Ellipse(midpoint, horizontalRadius, verticalRadius);
 
         final var json = ellipse.toJson();
-        Assert.assertNotNull(json);
-        Assert.assertEquals(horizontalRadius, json.getDouble("horizontalRadius"), 1e-15);
-        Assert.assertEquals(verticalRadius, json.getDouble("verticalRadius"), 1e-15);
-        Assert.assertFalse(json.has("area"));
-        Assert.assertFalse(json.has("circumference"));
-        Assert.assertFalse(json.has("horizontalDiameter"));
-        Assert.assertFalse(json.has("verticalDiameter"));
+        assertNotNull(json);
+        assertEquals(horizontalRadius, json.getDouble("horizontalRadius"), 1e-15);
+        assertEquals(verticalRadius, json.getDouble("verticalRadius"), 1e-15);
+        assertFalse(json.has("area"));
+        assertFalse(json.has("circumference"));
+        assertFalse(json.has("horizontalDiameter"));
+        assertFalse(json.has("verticalDiameter"));
 
 
         final var midpointJson = json.getJSONObject("midpoint");
-        Assert.assertNotNull(midpointJson);
-        Assert.assertEquals(midpoint.getX(), midpointJson.getInt("x"));
-        Assert.assertEquals(midpoint.getY(), midpointJson.getInt("y"));
+        assertNotNull(midpointJson);
+        assertEquals(midpoint.getX(), midpointJson.getInt("x"));
+        assertEquals(midpoint.getY(), midpointJson.getInt("y"));
     }
 
     @Test
     public void testToString() {
         final var ellipse = new Ellipse(new Point(0, 0), 10, 20);
-        Assert.assertNotNull(ellipse.toString());
-        Assert.assertTrue(ellipse.toString().length() > 0);
+        assertNotNull(ellipse.toString());
+        assertFalse(ellipse.toString().isEmpty());
     }
 
     @Test
@@ -191,13 +192,13 @@ public class TestEllipse {
         final var ellipse = new Ellipse(midpoint, 10, 20);
         ellipse.setMidpoint(new Point(10, 10));
 
-        Assert.assertNotSame(midpoint, ellipse.getMidpoint());
+        assertNotSame(midpoint, ellipse.getMidpoint());
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void testSetMidpoint_withNullPoint() {
         final var ellipse = new Ellipse(new Point(0, 0), 10, 20);
-        ellipse.setMidpoint(null);
+        assertThrows(NullPointerException.class, () -> ellipse.setMidpoint(null));
     }
 
     @Test
@@ -205,7 +206,7 @@ public class TestEllipse {
         final var ellipse = new Ellipse(new Point(0, 0), 10, 20);
         ellipse.setHorizontalRadius(30);
 
-        Assert.assertEquals(30, ellipse.getHorizontalRadius(), 1e-15);
+        assertEquals(30, ellipse.getHorizontalRadius(), 1e-15);
     }
 
     @Test
@@ -213,8 +214,8 @@ public class TestEllipse {
         final var ellipse = new Ellipse(new Point(0, 0), 10, 20);
         ellipse.setHorizontalRadius(30);
 
-        Assert.assertEquals(30, ellipse.getHorizontalRadius(), 1e-15);
-        Assert.assertEquals(1884.96, ellipse.getArea(), 0.01);
+        assertEquals(30, ellipse.getHorizontalRadius(), 1e-15);
+        assertEquals(1884.96, ellipse.getArea(), 0.01);
     }
 
     @Test
@@ -222,8 +223,8 @@ public class TestEllipse {
         final var ellipse = new Ellipse(new Point(0, 0), 10, 20);
         ellipse.setHorizontalRadius(30);
 
-        Assert.assertEquals(30, ellipse.getHorizontalRadius(), 1e-15);
-        Assert.assertEquals(158.65, ellipse.getCircumference(), 0.01);
+        assertEquals(30, ellipse.getHorizontalRadius(), 1e-15);
+        assertEquals(158.65, ellipse.getCircumference(), 0.01);
     }
 
     @Test
@@ -231,9 +232,9 @@ public class TestEllipse {
         final var ellipse = new Ellipse(new Point(0, 0), 10, 20);
         ellipse.setHorizontalRadius(30);
 
-        Assert.assertEquals(30, ellipse.getHorizontalRadius(), 1e-15);
-        Assert.assertEquals(60, ellipse.getHorizontalDiameter(), 1e-15);
-        Assert.assertEquals(40, ellipse.getVerticalDiameter(), 1e-15);
+        assertEquals(30, ellipse.getHorizontalRadius(), 1e-15);
+        assertEquals(60, ellipse.getHorizontalDiameter(), 1e-15);
+        assertEquals(40, ellipse.getVerticalDiameter(), 1e-15);
     }
 
     @Test
@@ -241,7 +242,7 @@ public class TestEllipse {
         final var ellipse = new Ellipse(new Point(0, 0), 10, 20);
         ellipse.setVerticalRadius(30);
 
-        Assert.assertEquals(30, ellipse.getVerticalRadius(), 1e-15);
+        assertEquals(30, ellipse.getVerticalRadius(), 1e-15);
     }
 
     @Test
@@ -249,8 +250,8 @@ public class TestEllipse {
         final var ellipse = new Ellipse(new Point(0, 0), 10, 20);
         ellipse.setVerticalRadius(30);
 
-        Assert.assertEquals(30, ellipse.getVerticalRadius(), 1e-15);
-        Assert.assertEquals(942.48, ellipse.getArea(), 0.01);
+        assertEquals(30, ellipse.getVerticalRadius(), 1e-15);
+        assertEquals(942.48, ellipse.getArea(), 0.01);
     }
 
     @Test
@@ -258,8 +259,8 @@ public class TestEllipse {
         final var ellipse = new Ellipse(new Point(0, 0), 10, 20);
         ellipse.setVerticalRadius(30);
 
-        Assert.assertEquals(30, ellipse.getVerticalRadius(), 1e-15);
-        Assert.assertEquals(133.65, ellipse.getCircumference(), 0.01);
+        assertEquals(30, ellipse.getVerticalRadius(), 1e-15);
+        assertEquals(133.65, ellipse.getCircumference(), 0.01);
     }
 
     @Test
@@ -267,8 +268,8 @@ public class TestEllipse {
         final var ellipse = new Ellipse(new Point(0, 0), 10, 20);
         ellipse.setVerticalRadius(30);
 
-        Assert.assertEquals(30, ellipse.getVerticalRadius(), 1e-15);
-        Assert.assertEquals(20, ellipse.getHorizontalDiameter(), 1e-15);
-        Assert.assertEquals(60, ellipse.getVerticalDiameter(), 1e-15);
+        assertEquals(30, ellipse.getVerticalRadius(), 1e-15);
+        assertEquals(20, ellipse.getHorizontalDiameter(), 1e-15);
+        assertEquals(60, ellipse.getVerticalDiameter(), 1e-15);
     }
 }
